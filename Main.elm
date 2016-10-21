@@ -13,19 +13,20 @@ import String
 
 sayHello : String -> String
 sayHello friendsName =
-    "TODO: implement me"
+    "Hello, "
+        ++ friendsName
 
 
 formatPhoneNumber : String -> String -> String -> String
 formatPhoneNumber areaCode exchange local =
     -- desired format: (999) 999-9999
-    "TODO: implement me"
+    "(" ++ areaCode ++ ") " ++ exchange ++ "-" ++ local
 
 
 initials : String -> String -> String
 initials firstName lastName =
     -- HINT: look at http://package.elm-lang.org/packages/elm-lang/core/latest/String for useful functions
-    "TODO: implement me"
+    String.left 1 firstName ++ String.left 1 lastName
 
 
 pigLatin : String -> String
@@ -34,7 +35,7 @@ pigLatin word =
     -- and put it at the end of the word, followed by an "ay" sound.
     -- Pig latin, in pig latin, is "Ig-pay atin-lay"
     -- For this exercise, just worry about producing a single word in pig latin.
-    "TODO: implement me"
+    String.toUpper (String.slice 1 2 word) ++ String.dropLeft 2 word ++ "-" ++ String.toLower (String.left 1 word) ++ "ay"
 
 
 
@@ -45,13 +46,26 @@ pigLatin word =
 
 isGreaterThanTen : Int -> Bool
 isGreaterThanTen x =
-    -- TODO: implement me
-    False
+    x > 10
 
 
 howHotIsThePepper : Float -> String
 howHotIsThePepper heatUnits =
-    "TODO: implement me"
+    case heatUnits of
+        50000 ->
+            "hot"
+
+        3000 ->
+            "medium"
+
+        100 ->
+            "mild"
+
+        1 ->
+            "not hot"
+
+        _ ->
+            "not hot"
 
 
 
@@ -62,21 +76,22 @@ howHotIsThePepper heatUnits =
 
 reverseTheList : List a -> List a
 reverseTheList inputList =
-    -- TODO: return the reversed inputList
     -- HINT: look at http://package.elm-lang.org/packages/elm-lang/core/latest/List for useful functions
-    []
+    List.reverse inputList
 
 
 addOne : List Int -> List Int
 addOne inputList =
-    -- TODO: add one to every item in the list
-    []
+    List.map (\x -> x + 1) inputList
 
 
 removeOs : List String -> List String
 removeOs inputList =
-    -- TODO: remove all entries that start with "O"
-    []
+    List.filter starterCheck inputList
+
+
+starterCheck item =
+    String.startsWith "O" item == False
 
 
 
@@ -91,32 +106,30 @@ type alias Person =
 
 newborn : String -> { name : String, age : Int }
 newborn name =
-    -- TODO: fix me
-    { name = "", age = -1 }
+    { name = name, age = 0 }
 
 
 ageDifference : { name : String, age : Int } -> { name : String, age : Int } -> Int
 ageDifference person1 person2 =
-    -- TODO: fix me
-    0
+    if (person1.age > person2.age) then
+        person1.age - person2.age
+    else
+        person2.age - person1.age
 
 
 nameChange : String -> { name : String, age : Int } -> { name : String, age : Int }
 nameChange newName person =
-    -- TODO: fix me
-    person
+    { person | name = newName }
 
 
 getOlder : { name : String, age : Int } -> { name : String, age : Int }
 getOlder person =
-    -- TODO: fix me
-    person
+    { person | age = person.age + 1 }
 
 
 combinedYears : List { name : String, age : Int } -> Int
 combinedYears people =
-    -- TODO: fix me
-    0
+    List.sum (List.map .age people)
 
 
 
@@ -127,8 +140,14 @@ combinedYears people =
 
 signAndMagnitude : Int -> ( String, Int )
 signAndMagnitude x =
-    -- TODO: implement me
-    ( "TODO", 0 )
+    if x < 0 && x > -10 then
+        ( "-", Result.withDefault 0 (String.toInt (String.right 1 (toString x))) )
+    else if x > 0 && x < 10 then
+        ( "+", Result.withDefault 0 (String.toInt (String.right 1 (toString x))) )
+    else if x < -9 then
+        ( "-", Result.withDefault 0 (String.toInt (String.right 2 (toString x))) )
+    else
+        ( "+", Result.withDefault 0 (String.toInt (String.right 2 (toString x))) )
 
 
 
